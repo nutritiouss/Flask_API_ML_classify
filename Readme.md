@@ -37,7 +37,7 @@
 
 ```
 git clone https://github.com/vavasya/Flask_API_ML_classify.git
-
+cd Flask_API_ML_classify
 docker-compose up -d
 ```
 Мониторинг осущетвляется на стандартных портах, при необходимости можно поменять в файле ``docker-comose.yml``
