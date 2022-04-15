@@ -36,7 +36,7 @@
 ## Развертывание системы
 
 ```
-git clone ....
+git clone https://github.com/vavasya/Flask_API_ML_classify.git
 
 docker-compose up -d
 ```
