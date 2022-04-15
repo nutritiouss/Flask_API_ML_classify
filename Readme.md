@@ -36,8 +36,8 @@
 ## Развертывание системы
 
 ```
-git clone ....
-
+git clone https://github.com/vavasya/Flask_API_ML_classify.git
+cd Flask_API_ML_classify
 docker-compose up -d
 ```
 Мониторинг осущетвляется на стандартных портах, при необходимости можно поменять в файле ``docker-comose.yml``
@@ -71,7 +71,7 @@ curl -L -X POST 'localhost:5000/reg/' \
 }'
 ```
 
-##Планы по дальнейшему развитию
+## Планы по дальнейшему развитию
 
 
 - Использовать связку celery+RABBIT для увеличения отказоустойчивости и уменьшения latency.
