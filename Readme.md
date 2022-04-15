@@ -40,6 +40,21 @@ git clone https://github.com/vavasya/Flask_API_ML_classify.git
 cd Flask_API_ML_classify
 docker-compose up -d
 ```
+Посмотрим логи на генераторе запросов
+
+```docker logs -f generator```
+
+**response**
+```
+{
+  "body": {
+    "negative": 0.9965305324728679, 
+    "positive": 0.0034694675271320754
+  }, 
+  "status": "ok"
+}
+```
+
 Мониторинг осущетвляется на стандартных портах, при необходимости можно поменять в файле ``docker-comose.yml``
 
 ```
