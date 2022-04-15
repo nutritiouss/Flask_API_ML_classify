@@ -1,0 +1,88 @@
+version: '3.7'
+
+services:
+  flask:
+    container_name: regno-api
+    build: .
+    env_file:
+      - ./config/compose.env
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./:/usr/project/
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 2G
+    networks:
+      - regno_net
+
+  #extractor raw data
+  generator:
+    container_name: generator
+    build:
+      context: ./generator
+    stop_signal: SIGKILL
+    volumes:
+      - ./generator:/var/app
+    restart: unless-stopped
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 4G
+    networks:
+      - regno_net
+
+
+
+ # the Prometheus server
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.2.1
+    volumes:
+      - ./infrastructure/prometheus/config.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - 9090:9090
+    depends_on:
+      - flask
+    networks:
+      - regno_net
+
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:5.1.0
+    container_name: grafana_regno
+    volumes:
+      - ./infrastructure/grafana/config.ini:/etc/grafana/grafana.ini
+      - ./infrastructure/grafana/datasource.yaml:/etc/grafana/provisioning/datasources/default.yaml
+      - ./infrastructure/grafana/dashboard.yaml:/etc/grafana/provisioning/dashboards/default.yaml
+      - ./infrastructure/grafana/dashboards:/var/lib/grafana/dashboards
+    ports:
+      - 3000:3000
+    depends_on:
+      - prometheus
+    networks:
+      - regno_net
+
+#  rabbitmq:
+#      image: rabbitmq:3-management
+#      container_name: rabbitmq
+#      ports:
+#          - 5672:5672
+#          - 15672:15672
+#      environment:
+#        - RABBITMQ_DEFAULT_USER=admin
+#        - RABBITMQ_DEFAULT_PASS=admin
+##      volumes:
+##        - ~/.docker-conf/rabbitmq/data/:/var/lib/rabbitmq/
+##        - ~/.docker-conf/rabbitmq/log/:/var/log/rabbitmq
+#      networks:
+#        - regno_net
+
+networks:
+  regno_net:
+    driver: bridge

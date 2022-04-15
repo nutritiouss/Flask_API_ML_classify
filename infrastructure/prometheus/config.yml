@@ -1,0 +1,16 @@
+global:
+  scrape_interval: 1s
+
+  external_labels:
+    monitor: "example-app"
+
+rule_files:
+
+scrape_configs:
+#  - job_name: "prometheus"
+#    static_configs:
+#      - targets: ["prometheus:5000"]
+
+  - job_name: "regno"
+    static_configs:
+      - targets: ["flask:5000"]
